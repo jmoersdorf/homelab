@@ -40,3 +40,23 @@ A snapshot is primarily intended as a short-term recovery point before configura
 A backup creates a separate copy of the virtual machine and can be stored independently from the VM.
 
 For this homelab, snapshots will be used before significant configuration changes, while a separate backup strategy will be implemented later.
+
+## System Update Baseline Snapshot
+
+After updating all installed Debian packages and verifying the system state, a second baseline snapshot was created.
+
+Snapshot name:
+
+`baseline-after-system-update`
+
+Before creating the snapshot, the following checks were completed:
+
+- All available Debian package updates were installed
+- `apt update` reported that all packages were up to date
+- `apt list --upgradeable` returned no packages
+- No system reboot was required
+- The SSH service was verified as active and running
+
+The snapshot was created without including the VM's RAM state.
+
+This snapshot serves as the recovery point before installing and configuring additional server services.
