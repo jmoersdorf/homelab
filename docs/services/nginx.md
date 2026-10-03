@@ -145,3 +145,57 @@ The Nginx web server is operational and accessible on the local network over HTT
 HTTPS/TLS has not yet been configured. Therefore, browser connections currently use unencrypted HTTP on TCP port `80`.
 
 Further Nginx configuration and HTTPS will be explored later.
+
+# Nginx Troubleshooting
+
+## Configuration Validation
+
+Before applying changes to the Nginx configuration, the configuration should always be tested.
+
+    sudo nginx -t
+
+A successful test returns:
+
+    syntax is ok
+    test is successful
+
+During troubleshooting, a missing semicolon in `nginx.conf` caused the configuration test to fail.
+
+Although Nginx was still running and the website was reachable, the configuration file on disk was invalid.
+
+This demonstrates an important principle:
+
+> A running service does not necessarily mean that its current configuration file is valid.
+
+## Troubleshooting Workflow
+
+A safe workflow for Nginx configuration changes is:
+
+1. **Edit** the configuration.
+2. **Validate** the configuration with `nginx -t`.
+3. **Apply** the configuration with a reload.
+4. **Verify** that the service is working correctly.
+
+Commands:
+
+    sudo nginx -t
+    sudo systemctl reload nginx
+    systemctl status nginx
+
+The listening ports can also be verified with:
+
+    sudo ss -tulpn
+
+Nginx should be listening on TCP port 80 for HTTP.
+
+Service logs can be inspected with:
+
+    sudo journalctl -u nginx
+
+## Key Takeaway
+
+Always validate configuration changes before reloading a service.
+
+**Workflow:**
+
+`Edit → Validate → Apply → Verify`
